@@ -1,6 +1,4 @@
-<?php
-    include "db/connect.php"
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">

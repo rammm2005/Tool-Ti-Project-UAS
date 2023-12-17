@@ -1,5 +1,6 @@
 <?php
 class Database {
+    
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
@@ -11,9 +12,7 @@ class Database {
 
         if ($this->connection->connect_error) {
             die("<p class='text-black font-bold text-lg'>Connection failed: " . $this->connection->connect_error."</p>");
-        } else {
-            echo "Database connected successfully ";
-        }
+        } 
     }
 }
 ?>
