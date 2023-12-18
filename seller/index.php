@@ -1,5 +1,10 @@
-
-
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -279,11 +284,11 @@
                 </li>
                 <li class="dropdown ml-3">
                     <button type="button" class="dropdown-toggle flex items-center">
-                        <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded block object-cover align-middle">
+                        <img src="src/image/default.png" alt="" class="w-8 h-8 rounded block object-cover align-middle">
                     </button>
                     <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
                         <li>
-                            <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
+                            <a href="profile/profile.php?unique-seller=<?php echo $_SESSION['user_id'] ?>" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
                         </li>
                         <li>
                             <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Settings</a>

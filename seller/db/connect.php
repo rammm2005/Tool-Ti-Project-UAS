@@ -14,5 +14,9 @@ class Database {
             die("<p class='text-black font-bold text-lg'>Connection failed: " . $this->connection->connect_error."</p>");
         } 
     }
+
+    public function getConnection() {
+        return $this->connection;
+    }
 }
 ?>

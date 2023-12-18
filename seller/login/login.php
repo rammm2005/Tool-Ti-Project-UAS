@@ -1,3 +1,21 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
+        $massage = '';
+        if (isset($_GET['login_error']) && $_GET['login_error'] === 'failed') {
+          $massage = '<div id="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong class="font-bold">Credential not match!</strong>
+          <span class="block sm:inline">Login failed. Please check your credentials</span>
+          <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert" >
+            <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+          </span>
+        </div>';
+        }
+  ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,7 +108,12 @@
       <h1 class="text-3xl font-semibold mb-6 text-black text-center">Sign In</h1>
       <h1 class="text-sm font-semibold mb-6 text-gray-500 text-center">Get your dashboard and get greate benefite income </h1>
       <div class="mt-4 flex flex-col lg:flex-row items-center justify-between">
-        
+      <?php
+        if(isset($massage)){
+          echo $massage;
+        }
+        ?>
+
       </div>
       <div class="mt-4 text-sm text-gray-600 text-center">
         <p>or with email</p>
@@ -110,7 +133,7 @@
         </div>
       </form>
       <div class="mt-4 text-sm text-gray-600 text-center">
-        <p>Already have an account? <a href="../register/register.php" class="text-black hover:underline">Login here</a>
+        <p>Already have an account? <a href="../register/register.php" class="text-black hover:underline">Register here</a>
         </p>
       </div>
     </div>
@@ -119,7 +142,22 @@
 
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="../dist/js/script.js"></script>
+<!-- <script src="../dist/js/script.js"></script> -->
+
+<script>
+  const errAlertToggle = document.querySelector('#err-alert');
+const errAlert = document.querySelector('#alert');
+  errAlertToggle.addEventListener('click', function() {
+        errAlert.style.opacity = '0';
+        errAlert.style.transition= 'all ease 1s';
+        errAlert.style.display = '';
+
+        setTimeout(function() {
+        errAlert.style.display = 'none';
+    }, 1000);
+});
+
+</script>
     
 </body>
 </html>

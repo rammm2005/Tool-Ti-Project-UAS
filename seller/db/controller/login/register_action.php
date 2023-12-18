@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
     // Melakukan registrasi
     $auth = new Auth();
-    $id_seller = $auth->generateIdSeller(); // Gunakan fungsi generateIdSeller yang sudah Anda buat
+    $id_seller = $auth->generateIdSeller();
     $status_seller = '1';
 
     if ($auth->register($id_seller, $email, $sellername, $password, $status_seller)) {
