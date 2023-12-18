@@ -7,20 +7,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirm_password'];
 
-    // Validasi password
     if ($password !== $confirmPassword) {
-        die("Password and Confirm Password do not match.");
+        header("Location: ../../../register/register.php?register=passsword_not_valid");
+        exit();
     }
 
-    // Melakukan registrasi
+
     $auth = new Auth();
     $id_seller = $auth->generateIdSeller();
     $status_seller = '1';
 
     if ($auth->register($id_seller, $email, $sellername, $password, $status_seller)) {
-        echo "Registration successful. You can now <a href='../../../login/login.php'>login</a>.";
+        header("Location: ../../../login/login.php?register=successfull");
+        exit();
     } else {
-        echo "Registration failed. Please try again.";
+        header("Location: ../../../register/register.php?register=failed");
+        exit();
     }
 }
 ?>

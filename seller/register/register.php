@@ -1,3 +1,37 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
+        $massage = '';
+        
+        if(isset($_GET['register']) && $_GET['register'] == 'passsword_not_valid'){
+          $massage = ' <div class="flex items-center p-4 mb-4 text-sm rounded-lg bg-red-500 text-white" id="errorMessage" role="alert">
+          <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">Password not Match!</span> Please make sure your password was match.
+          </div>
+        </div>';
+        }
+        if(isset($_GET['register']) && $_GET['register'] == 'failed'){
+          $massage = '  <div class="flex items-center p-4 mb-4 text-sm rounded-lg bg-red-500 text-white" id="errorMessage" role="alert">
+          <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">Register Failed!</span> Email was Exits, Please use Different email address.
+          </div>
+        </div>';
+        }
+        
+  ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +40,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../dist/css/style.css">
-    <title>Login - Seller</title>
+    <title>Register - Seller</title>
 </head>
 <body>
 
@@ -90,7 +124,11 @@
       <h1 class="text-3xl font-semibold mb-6 text-black text-center">Sign Up</h1>
       <h1 class="text-sm font-semibold mb-6 text-gray-500 text-center">Join to Our Community with all time access and free </h1>
       <div class="mt-4 flex flex-col lg:flex-row items-center justify-between">
-        
+      <?php
+        if(isset($massage)){
+          echo $massage;
+        }
+        ?>
       </div>
       <div class="mt-4 text-sm text-gray-600 text-center">
         <p>Login with email</p>
@@ -128,6 +166,20 @@
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../dist/js/script.js"></script>
-    
+    <script>
+      const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.style.display = 'flex';
+            errorMessage.style.transition="all ease 1s";
+
+            setTimeout(() => {
+                errorMessage.style.opacity = 0;
+            }, 10000);
+
+            errorMessage.addEventListener('transitionend', () => {
+                errorMessage.style.display = 'none';
+            });
+        }
+    </script>
 </body>
 </html>

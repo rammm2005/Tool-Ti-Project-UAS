@@ -15,6 +15,20 @@ if (isset($_SESSION['user_id'])) {
           </span>
         </div>';
         }
+        $succeed ='';
+        if(isset($_GET['register']) && $_GET['register'] == 'successfull'){
+          $succeed = '
+          <div id="regis-success" class="cursor-pointer absolute mt-8 left-1/2 transform justify-center flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 w-full lg:w-[32rem]">
+          <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+              <span class="font-medium">Successfull Register!</span> Please login to get into your dashboard.
+          </div>
+      </div>      
+        ';
+        }
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,26 +152,46 @@ if (isset($_SESSION['user_id'])) {
       </div>
     </div>
   </div>
+  <?php
+  echo $succeed;
+  ?>
 </div>
 
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- <script src="../dist/js/script.js"></script> -->
-
 <script>
-  const errAlertToggle = document.querySelector('#err-alert');
-const errAlert = document.querySelector('#alert');
-  errAlertToggle.addEventListener('click', function() {
-        errAlert.style.opacity = '0';
-        errAlert.style.transition= 'all ease 1s';
-        errAlert.style.display = '';
+    document.addEventListener('DOMContentLoaded', function () {
+        const errAlertToggle = document.querySelector('#err-alert');
+        const errAlert = document.querySelector('#alert');
+        const alertNotif = document.getElementById('regis-success');
+        if (errAlertToggle && errAlert) {
+            errAlertToggle.addEventListener('click', function () {
+                errAlert.style.opacity = '0';
+                errAlert.style.transition = 'all ease 1s';
 
-        setTimeout(function() {
-        errAlert.style.display = 'none';
-    }, 1000);
-});
+                setTimeout(function () {
+                    errAlert.style.display = 'none';
+                }, 1000);
+            });
+        }
+        if (alertNotif) {
+            alertNotif.style.transition = 'transform 0.5s, opacity 0.5s';
+            alertNotif.style.transform = 'translate(-50%)';
+            alertNotif.style.opacity = '1';
 
+            setTimeout(() => {
+                alertNotif.style.transform = 'translateX(0%)';
+                alertNotif.style.opacity = '0';
+
+                setTimeout(() => {
+                    alertNotif.remove();
+                }, 500);
+            }, 12000);
+        }
+    });
 </script>
+
     
 </body>
 </html>
