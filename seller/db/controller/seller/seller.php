@@ -29,6 +29,40 @@ class Seller extends Database {
         );
     }
 
+    public function updateSeller($id_seller, $firstname, $lastnama, $email, $sellername, $foto_seller) {
+        $sql = "UPDATE seller SET firstname = '$firstname', lastnama = '$lastnama', email = '$email', sellername = '$sellername'";
+    
+        if (!empty($foto_seller['name'])) {
+            // Get file details
+            $fileName = $foto_seller['name'];
+            $fileTmpName = $foto_seller['tmp_name'];
+            $fileSize = $foto_seller['size'];
+            $fileError = $foto_seller['error'];
+            $fileType = $foto_seller['type'];
+    
+            if ($fileError !== 0) {
+                die("File upload error: " . $fileError);
+            }
+    
+            $uploadDir = '../../../dist/images/';
+            $uploadPath = $uploadDir . $fileName;
+    
+            move_uploaded_file($fileTmpName, $uploadPath);
+    
+            $sql .= ", foto_seller = '$uploadPath'";
+        }
+    
+        $sql .= " WHERE id_seller = '$id_seller'";
+    
+        if ($this->connection->query($sql) === TRUE) {
+            echo "Record updated successfully";
+        } else {
+            die("Error updating record: " . $this->connection->error);
+        }
+    }
+    
+    
+
     private function generateIdSeller() {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         $id = '';
