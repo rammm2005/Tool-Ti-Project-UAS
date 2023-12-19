@@ -94,9 +94,10 @@ require_once('../db/connect.php');
                                 <table class="w-full my-0 align-middle text-dark border-neutral-200">
                                     <thead class="align-bottom">
                                         <tr class="font-semibold text-[0.95rem] text-secondary-dark">
-                                            <th class="pb-3 text-start text-blue-600 min-w-[175px]">Kode Warna</th>
-                                            <th class="pb-3 text-end min-w-[100px]">Warna</th>
-                                            <th class="pb-3 text-end min-w-[50px]">Acions</th>
+                                            <th class="pb-3 text-start text-blue-600 min-w-[175px]">Id Warna</th>
+                                            <th class="pb-3 text-end min-w-[50px]">Kode Warna</th>
+                                            <th class="pb-3 text-end min-w-[40px]">Warna</th>
+                                            <th class="pb-3 text-end min-w-[30px]">Acions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -111,6 +112,14 @@ require_once('../db/connect.php');
                                                             <?php echo $color['id_warna'];?> </a>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td class="p-3 pr-0 text-end">
+                                                <span class="font-semibold text-light-inverse text-md/normal gap-5 relative">
+                                                <?php echo ($color['kode_warna'] == null) ? 'not set' : $color['kode_warna']; ?>
+                                                        <?php if ($color['kode_warna'] !== null): ?>
+                                                            <b class="rounded-full w-5 h-5 px-5 py-2 shadow-md" style="background-color: <?php echo $color['kode_warna']; ?>"></b>
+                                                        <?php endif; ?>
+                                                </span>
                                             </td>
                                             <td class="p-3 pr-0 text-end">
                                                 <span class="font-semibold text-light-inverse text-md/normal"><?php echo $color['nama_warna'];?></span>

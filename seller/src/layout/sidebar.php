@@ -32,12 +32,18 @@
             <li class="mb-1 group">
                 <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
                     <i class="ri-flashlight-line mr-3 text-lg"></i>
-                    <span class="text-sm">Services</span>
+                    <span class="text-sm">Produk</span>
                     <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
+                <li class="mb-4">
+                        <a href="produk/produk.php?unique-seller=<?php echo $_SESSION['user_id'] ?>" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Product</a>
+                    </li>
                     <li class="mb-4">
-                        <a href="#" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage services</a>
+                        <a href="produk/color-manager.php?unique-seller=<?php echo $_SESSION['user_id']?>" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Color</a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="produk/size-manage.php?unique-seller=<?php echo $_SESSION['user_id']?>" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Size</a>
                     </li>
                 </ul>
             </li>

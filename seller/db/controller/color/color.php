@@ -5,8 +5,8 @@ require_once "../../connect.php";
 
 class Color extends Database{
 
-    public function insertColor($id_warna,$nama_warna){
-        $sql = "INSERT INTO warna(id_warna,nama_warna)VALUES ('$id_warna','$nama_warna')";
+    public function insertColor($id_warna,$nama_warna,$kode_warna){
+        $sql = "INSERT INTO warna(id_warna,nama_warna,kode_warna)VALUES ('$id_warna','$nama_warna','$kode_warna')";
 
         if($this->connection->query($sql) === TRUE){
             echo "Record added successfully";
