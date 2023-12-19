@@ -37,13 +37,13 @@
                 </a>
                 <ul class="pl-7 mt-2 hidden group-[.selected]:block">
                     <li class="mb-4">
-                        <a href="../produk/produk.php" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Product</a>
+                        <a href="../produk/produk.php?unique-seller=<?php echo $_SESSION['user_id'] ?>" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Product</a>
                     </li>
                     <li class="mb-4">
-                        <a href="../produk/color-manage.php" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Color</a>
+                        <a href="../produk/color-manager.php?unique-seller=<?php echo $_SESSION['user_id']?>" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Color</a>
                     </li>
                     <li class="mb-4">
-                        <a href="../produk/size-manage.php" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Size</a>
+                        <a href="../produk/size-manage.php?unique-seller=<?php echo $_SESSION['user_id']?>" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Manage Size</a>
                     </li>
                 </ul>
             </li>
