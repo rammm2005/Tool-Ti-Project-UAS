@@ -94,7 +94,7 @@ require_once('../db/connect.php');
                                 <table class="w-full my-0 align-middle text-dark border-neutral-200">
                                     <thead class="align-bottom">
                                         <tr class="font-semibold text-[0.95rem] text-secondary-dark">
-                                            <th class="pb-3 text-start text-green-600 min-w-[175px]">Kode Warna</th>
+                                            <th class="pb-3 text-start text-blue-600 min-w-[175px]">Kode Warna</th>
                                             <th class="pb-3 text-end min-w-[100px]">Warna</th>
                                             <th class="pb-3 text-end min-w-[50px]">Acions</th>
                                         </tr>
