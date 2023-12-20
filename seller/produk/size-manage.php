@@ -6,6 +6,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 require_once('../db/connect.php');
 
+
+
 $delete = '';
 if (isset($_GET['delete']) && $_GET['delete'] == 'deleted') {
     $delete = '
@@ -49,18 +51,17 @@ if (isset($_GET['success']) && $_GET['success'] == 'edited') {
         </div>      
             ';
 }
-
-function getColorData($userId)
+function getSize($userId)
 {
     $connection = new Database();
-    $sql = mysqli_query($connection->getConnection(), "SELECT * FROM warna where id_seller = '" . $_SESSION['user_id'] . "' ORDER BY id_warna ASC");
+    $sql = mysqli_query($connection->getConnection(), "SELECT * FROM ukuran WHERE id_seller = '" . $_SESSION['user_id'] . "'");
     $data = [];
     while ($row = mysqli_fetch_assoc($sql)) {
         $data[] = $row;
     }
     return $data;
 }
-$colorData = getColorData($_SESSION['user_id']);
+$sizeData = getSize($_SESSION['user_id']);
 
 ?>
 
@@ -74,7 +75,7 @@ $colorData = getColorData($_SESSION['user_id']);
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../dist/css/style.css">
-    <title>Color Manager</title>
+    <title>Size Manager</title>
 </head>
 
 <body>
@@ -88,15 +89,15 @@ $colorData = getColorData($_SESSION['user_id']);
 
         <div class="flex flex-wrap -mx-3 mb-5">
             <?php
+
             if (isset($delete)) {
                 echo $delete;
             }
-
             if (isset($succeed)) {
                 echo $succeed;
             }
-
             ?>
+
 
             <div id="info-popup" tabindex="-1"
                 class="hidden overflow-y-auto overflow-x-hidden transform left-1/2 fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
@@ -105,8 +106,8 @@ $colorData = getColorData($_SESSION['user_id']);
                         <div class="mb-4 text-sm font-light text-gray-500 dark:text-gray-400">
                             <h3 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Delete Data</h3>
                             <p>
-                                Are you Sure want to Delete the Color data with Color name <strong
-                                    id="info-popup-color-name"></strong>
+                                Are you Sure want to Delete the Size data with Size "<strong
+                                    id="info-popup-color-name"></strong>" ?
                             </p>
                         </div>
                         <div class="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0">
@@ -131,7 +132,7 @@ $colorData = getColorData($_SESSION['user_id']);
                             class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
                             <h3
                                 class="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-                                <span class="mr-3 font-semibold text-dark">Color Manager Preview</span>
+                                <span class="mr-3 font-semibold text-dark">Size Manager Preview</span>
                                 <?php
                                 $connection = new Database();
                                 $id = $_SESSION['user_id'];
@@ -145,9 +146,9 @@ $colorData = getColorData($_SESSION['user_id']);
                                     </b></span>
                             </h3>
                             <div class="relative flex flex-wrap items-center my-2">
-                                <a href="add-color.php?unique-seller=<?php echo $_SESSION["user_id"]; ?>"
+                                <a href="add-size.php?unique-seller=<?php echo $_SESSION["user_id"]; ?>"
                                     class="inline-block text-[.925rem] font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-150 ease-in-out text-white bg-blue-600 border-light shadow-none border-0 py-2 px-5 hover:bg-blue-700 active:bg-blue-600 focus:bg-blue-600">
-                                    Make new Color </a>
+                                    Make new Size </a>
                             </div>
                         </div>
                         <div class="flex-auto block py-8 pt-6 px-9">
@@ -155,14 +156,14 @@ $colorData = getColorData($_SESSION['user_id']);
                                 <table class="w-full my-0 align-middle text-dark border-neutral-200">
                                     <thead class="align-bottom">
                                         <tr class="font-semibold text-[0.95rem] text-secondary-dark">
-                                            <th class="pb-3 text-start text-blue-600 min-w-[175px]">Id Warna</th>
-                                            <th class="pb-3 text-end min-w-[50px]">Kode Warna</th>
-                                            <th class="pb-3 text-end min-w-[40px]">Warna</th>
+                                            <th class="pb-3 text-start text-blue-600 min-w-[175px]">Id Ukuran</th>
+                                            <th class="pb-3 text-end min-w-[50px]">Ukuran</th>
+                                            <th class="pb-3 text-end min-w-[40px]">Keterangan</th>
                                             <th class="pb-3 text-end min-w-[30px]">Acions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($colorData as $color): ?>
+                                        <?php foreach ($sizeData as $size): ?>
                                             <tr class="border-b border-dashed last:border-b-0">
                                                 <td class="p-3 pl-0">
                                                     <div class="flex items-center">
@@ -170,7 +171,7 @@ $colorData = getColorData($_SESSION['user_id']);
                                                         <div class="flex flex-col justify-start">
                                                             <a href="javascript:void(0)"
                                                                 class="mb-1 font-semibold transition-colors duration-200 ease-in-out text-md/normal text-secondary-inverse hover:text-primary">
-                                                                <?php echo $color['id_warna']; ?>
+                                                                <?php echo $size['id_ukuran']; ?>
                                                             </a>
                                                         </div>
                                                     </div>
@@ -178,24 +179,20 @@ $colorData = getColorData($_SESSION['user_id']);
                                                 <td class="p-3 pr-0 text-end">
                                                     <span
                                                         class="font-semibold text-light-inverse text-md/normal gap-5 relative">
-                                                        <?php echo ($color['kode_warna'] == null) ? 'not set' : $color['kode_warna']; ?>
-                                                        <?php if ($color['kode_warna'] !== null): ?>
-                                                            <b class="rounded-full w-5 h-5 px-5 py-2 shadow-md"
-                                                                style="background-color: <?php echo $color['kode_warna']; ?>"></b>
-                                                        <?php endif; ?>
+                                                        <?= $size['besar_ukuran'] ?>
                                                     </span>
                                                 </td>
                                                 <td class="p-3 pr-0 text-end">
                                                     <span class="font-semibold text-light-inverse text-md/normal">
-                                                        <?php echo $color['nama_warna']; ?>
+                                                        <?php echo $size['desk']; ?>
                                                     </span>
                                                 </td>
 
                                                 <td class="p-3 pr-0 text-end flex flex-wrap">
                                                     <button
                                                         class="ml-auto relative text-secondary-dark bg-light-dark hover:text-primary flex items-center h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center hover:text-red-500 delete-button"
-                                                        data-id-warna="<?php echo $color['id_warna']; ?>"
-                                                        data-color-name="<?php echo $color['nama_warna']; ?>">
+                                                        data-id-ukuran="<?php echo $size['id_ukuran']; ?>"
+                                                        data-besar-ukuran="<?php echo $size['besar_ukuran']; ?>">
                                                         <span
                                                             class="flex items-center justify-center p-0 m-0 leading-none shrink-0">
                                                             <i class="ri-delete-bin-line"></i>
@@ -204,12 +201,13 @@ $colorData = getColorData($_SESSION['user_id']);
 
                                                     <button
                                                         class="ml-2 relative text-secondary-dark bg-light-dark hover:text-primary flex items-center h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center hover:text-blue-500">
-                                                        <a href="edit-color.php?nique-seller=<?php echo $_SESSION["user_id"]; ?>&color-code=<?php echo $color['id_warna']; ?>"
+                                                        <a href="edit-size.php?nique-seller=<?php echo $_SESSION["user_id"]; ?>&size-code=<?php echo $size['id_ukuran']; ?>"
                                                             class="flex items-center justify-center p-0 m-0 leading-none shrink-0">
                                                             <i class="ri-file-edit-line"></i>
                                                         </a>
                                                     </button>
                                                 </td>
+
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -230,9 +228,6 @@ $colorData = getColorData($_SESSION['user_id']);
 
 
 
-
-
-
     </main>
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -241,6 +236,7 @@ $colorData = getColorData($_SESSION['user_id']);
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const alertNotif = document.getElementById('regis-success');
+
             if (alertNotif) {
                 alertNotif.style.transition = 'transform 0.5s, opacity 0.5s';
                 alertNotif.style.transform = 'translate(-50%)';
@@ -260,53 +256,53 @@ $colorData = getColorData($_SESSION['user_id']);
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const deleteButtons = document.querySelectorAll('.delete-button');
-            const infoPopup = document.getElementById('info-popup');
-            const closeBtn = document.getElementById('close-modal');
-            const confirmBtn = document.getElementById('confirm-button');
-            const colorNameElement = document.getElementById('info-popup-color-name');
+document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        const infoPopup = document.getElementById('info-popup');
+        const closeBtn = document.getElementById('close-modal');
+        const confirmBtn = document.getElementById('confirm-button');
+        const colorNameElement = document.getElementById('info-popup-color-name');
 
-            function openPopup(colorName) {
-                colorNameElement.textContent = colorName;
-                infoPopup.classList.remove('hidden');
-            }
+        function openPopup(idUkuran, besarUkuran) {
+            colorNameElement.textContent = besarUkuran;
+            infoPopup.classList.remove('hidden');
+        }
 
-            function closePopup() {
-                infoPopup.classList.add('hidden');
-            }
+        function closePopup() {
+            infoPopup.classList.add('hidden');
+        }
 
-            deleteButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    const colorName = button.dataset.colorName;
-                    const idWarna = button.dataset.idWarna;
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const idUkuran = button.dataset.idUkuran;
+                const besarUkuran = button.dataset.besarUkuran;
 
-                    openPopup(colorName);
+                openPopup(idUkuran, besarUkuran);
 
-                    confirmBtn.addEventListener('click', function () {
-                        const actionDeleteURL = '../db/controller/color/delete_action.php';
+                confirmBtn.addEventListener('click', function () {
+                    const actionDeleteURL = '../db/controller/size/delete_action.php';
 
-                        $.ajax({
-                            type: 'POST',
-                            url: actionDeleteURL,
-                            data: { id_warna: idWarna },
-                            success: function (response) {
-                                console.log(response);
-                                const sellerId = '<?php echo isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : ""; ?>';
-                                window.location.href = `color-manager.php?unique-seller=${encodeURIComponent(sellerId)}&delete=deleted`;
-                            },
-                            error: function (xhr, status, error) {
-                                console.error(error);
-                            }
-                        });
-
-                        closePopup();
+                    $.ajax({
+                        type: 'POST',
+                        url: actionDeleteURL,
+                        data: { id_ukuran: idUkuran }, // Change the key to id_ukuran
+                        success: function (response) {
+                            console.log(response);
+                            const sellerId = '<?php echo isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : ""; ?>';
+                            window.location.href = `size-manage.php?unique-seller=${encodeURIComponent(sellerId)}&delete=deleted`;
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
                     });
+
+                    closePopup();
                 });
             });
-
-            closeBtn.addEventListener('click', closePopup);
         });
+
+        closeBtn.addEventListener('click', closePopup);
+    });
 
     </script>
 

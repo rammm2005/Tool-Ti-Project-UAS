@@ -9,12 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add-warna'])) {
     $nama_warna = $_POST['nama_warna'];
     $kode_warna = $_POST['kode_warna'];
     $id_warna = $colorHandler->idGenerate();
-    if (empty($id_warna) || empty($nama_warna) || empty($kode_warna)) {
+
+    // var_dump($id_seller, $nama_warna, $kode_warna, $id_warna);
+    if (empty($id_warna) || empty($nama_warna) || empty($kode_warna) || empty($id_seller)) {
         header('Location: ../../../produk/add-color.php?unique-seller=' . $id_seller . '&error=missing_fields');
         exit();
     }
 
-    $colorHandler->insertColor( $id_warna, $nama_warna, $kode_warna);
+    $colorHandler->insertColor( $id_warna, $nama_warna, $kode_warna, $id_seller );
     header('Location: ../../../produk/color-manager.php?unique-seller=' . $id_seller.'&success=added');
     exit();
 

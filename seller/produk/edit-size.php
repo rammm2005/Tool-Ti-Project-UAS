@@ -5,17 +5,46 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login/login.php");
     exit();
 }
+require_once('../db/connect.php');
 
 $massage = '';
 if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
     $massage = '<div id="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <strong class="font-bold">Data Error and Null !</strong>
-            <span class="block sm:inline">Please make sure your Color is Field.</span>
+            <span class="block sm:inline">Please make sure your Size is Field.</span>
             <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert" >
                 <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
             </span>
             </div>';
 }
+
+
+function getSize($sizeId)
+{
+    $connection = new Database();
+
+    $sql = $connection->getConnection()->prepare("SELECT * FROM ukuran WHERE id_ukuran = ?");
+    $sql->bind_param("s", $sizeId);
+    $sql->execute();
+
+    $result = $sql->get_result();
+
+    $data = $result->fetch_assoc();
+
+    $sql->close();
+
+    return $data;
+}
+
+// get data from the path url
+// $unique_seller = isset($_GET['unique-seller']) ? $_GET['unique-seller'] : '';
+$size_code = isset($_GET['size-code']) ? $_GET['size-code'] : '';
+
+// set value
+// $userId = $unique_seller;
+$sizeId = $size_code;
+
+$sizeData = getSize($sizeId);
 
 ?>
 <!DOCTYPE html>
@@ -27,7 +56,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../dist/css/style.css">
-    <title>Add Color</title>
+    <title>Edit Size</title>
 </head>
 
 <body>
@@ -46,48 +75,50 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
         if (isset($massage)) {
             echo $massage;
         }
-       
+
         ?>
 
         <div class="bg-white p-3 shadow-md rounded-sm">
-
-            <form class="py-3 px-3" method="POST"
-                action="../db/controller/color/insert_action.php">
+            <form class="py-3 px-3" method="POST" action="../db/controller/size/edit_action.php">
                 <div class="border-b border-gray-900/10 pb-12">
-                    <h2 class="text-base font-semibold leading-7 text-gray-900">Tambahkan Warna baru
-                    </h2>
-                    <p class="mt-1 text-sm leading-6 text-gray-600">Tambahkan Warna baru untuk menambahkan warna produk anda.</p>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900">Modifikasi Ukuran</h2>
+                    <p class="mt-1 text-sm leading-6 text-gray-600">Modifikasi Ukuran Produk.</p>
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <input type="hidden" name="id_ukuran" value="<?php echo $sizeId; ?>">
                         <div class="sm:col-span-3">
-                            <label for="nama" class="block text-sm font-medium leading-6 text-gray-900">Add Color</label>
+                            <label for="nama" class="block text-sm font-medium leading-6 text-gray-900">Size</label>
                             <div class="mt-2">
-                                <input type="text" name="nama_warna" id="nama" placeholder="gray or pink"
-                                    autocomplete="family-name"
-                                    class="block w-full rounded-md border-0 py-2 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                            </div>
-                        </div>
-                        <div class="sm:col-span-3">
-                            <label for="color_code" class="block text-sm font-medium leading-6 text-gray-900">Color Code</label>
-                            <div class="mt-2">
-                                <input type="color" name="kode_warna" id="color_code" placeholder="gray or pink"
-                                    autocomplete="family-name"
+                                <input type="text" name="besar_ukuran"
+                                    value="<?php echo isset($sizeData['besar_ukuran']) ? $sizeData['besar_ukuran'] : ''; ?>"
+                                    id="nama" placeholder="XL or L" autocomplete="family-name"
                                     class="block w-full rounded-md border-0 py-2 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                         </div>
 
+                        <div class="sm:col-span-3">
+                            <label for="desk" class="block text-sm font-medium leading-6 text-gray-900">Size
+                                Description</label>
+                            <div class="mt-2">
+                                <input type="text" name="desk" id="desk"
+                                    value="<?php echo isset($sizeData['desk']) ? $sizeData['desk'] : ''; ?>"
+                                    placeholder="Extra Large or Large" autocomplete="family-name"
+                                    class="block w-full rounded-md border-0 py-2 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="mt-6 flex items-center justify-end gap-x-6">
-                        <button type="button" onclick="window.history.back(-1)" class="text-sm font-semibold leading-6 text-gray-900">Back</button>
-                        <button type="submit" name="add-warna"
+                        <button type="button" onclick="window.history.back(-1)"
+                            class="text-sm font-semibold leading-6 text-gray-900">Back</button>
+                        <button type="submit" name="edit-size"
                             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
                     </div>
+                </div>
             </form>
         </div>
-
-
-
     </main>
+
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

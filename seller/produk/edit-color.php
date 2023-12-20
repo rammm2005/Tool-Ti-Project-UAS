@@ -1,22 +1,48 @@
 <?php
-
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login/login.php");
     exit();
 }
+require_once('../db/connect.php');
 
 $massage = '';
 if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
     $massage = '<div id="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Data Error and Null !</strong>
-            <span class="block sm:inline">Please make sure your Color is Field.</span>
-            <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert" >
+            <strong class="font-bold">Data Error and Not Match !</strong>
+            <span class="block sm:inline">Please make sure your Color is Field and check manually.</span>
+            <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert">
                 <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
             </span>
-            </div>';
+        </div>';
 }
 
+function getColorData($colorId)
+{
+    $connection = new Database();
+
+    $sql = $connection->getConnection()->prepare("SELECT * FROM warna WHERE id_warna = ?");
+    $sql->bind_param("s", $colorId);
+    $sql->execute();
+
+    $result = $sql->get_result();
+
+    $data = $result->fetch_assoc();
+
+    $sql->close();
+
+    return $data;
+}
+
+// get data from the path url
+// $unique_seller = isset($_GET['unique-seller']) ? $_GET['unique-seller'] : '';
+$color_code = isset($_GET['color-code']) ? $_GET['color-code'] : '';
+
+// set value
+// $userId = $unique_seller;
+$colorId = $color_code;
+
+$colorData = getColorData($colorId);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,12 +53,10 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../dist/css/style.css">
-    <title>Add Color</title>
+    <title>Edit Color</title>
 </head>
 
 <body>
-
-
 
     <?php
     include "../src/layout/sidebar_inside.php";
@@ -46,47 +70,45 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
         if (isset($massage)) {
             echo $massage;
         }
-       
         ?>
 
         <div class="bg-white p-3 shadow-md rounded-sm">
-
-            <form class="py-3 px-3" method="POST"
-                action="../db/controller/color/insert_action.php">
+            <form class="py-3 px-3" method="POST" action="../db/controller/color/edit_action.php">
                 <div class="border-b border-gray-900/10 pb-12">
-                    <h2 class="text-base font-semibold leading-7 text-gray-900">Tambahkan Warna baru
-                    </h2>
-                    <p class="mt-1 text-sm leading-6 text-gray-600">Tambahkan Warna baru untuk menambahkan warna produk anda.</p>
-
+                    <h2 class="text-base font-semibold leading-7 text-gray-900">Update Warna</h2>
+                    <p class="mt-1 text-sm leading-6 text-gray-600">Update Warna yang memiliki data yang kurang tepat.
+                    </p>
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div class="sm:col-span-3">
-                            <label for="nama" class="block text-sm font-medium leading-6 text-gray-900">Add Color</label>
+                            <input type="hidden" name="id_warna" value="<?php echo $colorId ?>">
+                            <label for="nama" class="block text-sm font-medium leading-6 text-gray-900">Color</label>
                             <div class="mt-2">
                                 <input type="text" name="nama_warna" id="nama" placeholder="gray or pink"
                                     autocomplete="family-name"
+                                    value="<?php echo isset($colorData['nama_warna']) ? $colorData['nama_warna'] : ''; ?>"
                                     class="block w-full rounded-md border-0 py-2 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                         </div>
                         <div class="sm:col-span-3">
-                            <label for="color_code" class="block text-sm font-medium leading-6 text-gray-900">Color Code</label>
+                            <label for="color_code" class="block text-sm font-medium leading-6 text-gray-900">Color
+                                Code</label>
                             <div class="mt-2">
                                 <input type="color" name="kode_warna" id="color_code" placeholder="gray or pink"
                                     autocomplete="family-name"
+                                    value="<?php echo isset($colorData['kode_warna']) ? $colorData['kode_warna'] : ''; ?>"
                                     class="block w-full rounded-md border-0 py-2 px-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             </div>
                         </div>
-
-
+                    </div>
                     <div class="mt-6 flex items-center justify-end gap-x-6">
-                        <button type="button" onclick="window.history.back(-1)" class="text-sm font-semibold leading-6 text-gray-900">Back</button>
-                        <button type="submit" name="add-warna"
+                        <button type="button" onclick="window.history.back(-1)"
+                            class="text-sm font-semibold leading-6 text-gray-900">Back</button>
+                        <button type="submit" name="edit-warna"
                             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
                     </div>
+                </div>
             </form>
         </div>
-
-
-
     </main>
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -101,7 +123,6 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
                 errAlertToggle.addEventListener('click', function () {
                     errAlert.style.opacity = '0';
                     errAlert.style.transition = 'all ease 1s';
-
                     setTimeout(function () {
                         errAlert.style.display = 'none';
                     }, 1000);
@@ -111,11 +132,9 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
                 alertNotif.style.transition = 'transform 0.5s, opacity 0.5s';
                 alertNotif.style.transform = 'translate(-50%)';
                 alertNotif.style.opacity = '1';
-
                 setTimeout(() => {
                     alertNotif.style.transform = 'translateX(0%)';
                     alertNotif.style.opacity = '0';
-
                     setTimeout(() => {
                         alertNotif.remove();
                     }, 500);
@@ -124,5 +143,4 @@ if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
         });
     </script>
 </body>
-
 </html>
