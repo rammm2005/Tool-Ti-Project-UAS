@@ -99,29 +99,22 @@ $sizeData = getSize($_SESSION['user_id']);
             ?>
 
 
-            <div id="info-popup" tabindex="-1"
-                class="hidden overflow-y-auto overflow-x-hidden transform left-1/2 fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-                <div class="relative p-4 w-full max-w-lg h-full md:h-auto">
-                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-8">
-                        <div class="mb-4 text-sm font-light text-gray-500 dark:text-gray-400">
-                            <h3 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Delete Data</h3>
-                            <p>
-                                Are you Sure want to Delete the Size data with Size "<strong
-                                    id="info-popup-color-name"></strong>" ?
-                            </p>
-                        </div>
-                        <div class="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0">
-                            <div class="items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
-                                <button id="close-modal" type="button"
-                                    class="py-2 px-4 w-full text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 sm:w-auto hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
-                                <button id="confirm-button" type="button"
-                                    class="py-2 px-4 w-full text-sm font-medium text-center text-white rounded-lg bg-danger-700 sm:w-auto hover:bg-danger-800 focus:ring-4 focus:outline-none focus:ring-danger-300 dark:bg-danger-600 dark:hover:bg-danger-700 dark:focus:ring-danger-800"><i
-                                        class="ri-delete-bin-2-line"></i> Confirm</button>
-                            </div>
+            <div id="info-popup" tabindex="-1" class="hidden absolute flex items-center justify-center z-[999] w-full h-full md:inset-0">
+                <div class="p-4 bg-white rounded-md py-5 px-5 mb-64 shadow dark:bg-gray-800">
+                    <div class="mb-4 text-sm font-light text-gray-500 dark:text-gray-400">
+                        <h3 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Delete Data</h3>
+                        <p>Are you Sure want to Delete the Size data with Size "<strong id="info-popup-color-name"></strong>"?</p>
+                    </div>
+                    <div class="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0">
+                        <div class="items-center justify-end space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
+                            <button id="close-modal" type="button" class="py-2 px-4 w-full text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 sm:w-auto hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
+                            <button id="confirm-button" type="button" class="py-2 px-4 w-full text-sm font-medium text-center text-white rounded-lg bg-red-700 sm:w-auto hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"><i class="ri-delete-bin-2-line"></i> Confirm</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+
 
             <div class="w-full max-w-full px-3 mb-6  mx-auto">
                 <div

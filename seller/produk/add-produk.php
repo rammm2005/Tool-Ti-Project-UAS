@@ -1,5 +1,3 @@
-Projek Uas Tool Ti
-
 <?php
 session_start();
 
@@ -14,6 +12,30 @@ $message = '';
 
 if (isset($_GET['error']) && $_GET['error'] === 'missing_fields') {
     $message = '<div id="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Data Error and Null !</strong>
+            <span class="block sm:inline">Please make sure your Size is Field.</span>
+            <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert" >
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+        </div>';
+}
+
+$messages = '';
+
+if (isset($_GET['error']) && $_GET['error'] === 'eror_insert') {
+    $messages = '<div id="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Data Error and Null !</strong>
+            <span class="block sm:inline">Please make sure your Size is Field.</span>
+            <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert" >
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+        </div>';
+}
+
+$no_data_upload = '';
+
+if (isset($_GET['error']) && $_GET['error'] === 'no_img_upload') {
+    $no_data_upload = '<div id="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <strong class="font-bold">Data Error and Null !</strong>
             <span class="block sm:inline">Please make sure your Size is Field.</span>
             <span class="absolute top-0 bottom-0 right-[-7px] px-4 py-3" id="err-alert" >
@@ -70,11 +92,10 @@ $colors = getColorsByUser($user_id);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" /> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../dist/css/style.css">
+    <link rel="stylesheet" href="../dist/css/main.css">
     <title>Add Product</title>
 </head>
 
@@ -89,19 +110,25 @@ $colors = getColorsByUser($user_id);
         if (isset($message)) {
             echo $message;
         }
+        if (isset($messages)) {
+            echo $messages;
+        }
+        if (isset($message)) {
+            echo $message;
+        }
         ?>
 
         <div class="px-4 px-4 mb-4">
             <div class="bg-white p-3 shadow-md rounded-sm">
-                <form class="py-3 px-3" method="POST" action="../db/controller/product/insert_action.php"
-                    enctype="multipart/form-data">
+                <form class="py-3 px-3" id="my-form" method="POST"  action="../db/controller/product/insert_action.php"
+                enctype="multipart/form-data">
                     <div class="border-b border-gray-900/10 pb-12">
                         <h2 class="text-base font-semibold leading-7 text-gray-900">Tambahkan Produk baru</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-600">Tambahkan Produk baru untuk meningkatkan
                             penjualan anda.</p>
 
 
-                    
+
                         <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div class="sm:col-span-3">
                                 <label for="nama" class="block text-sm font-medium leading-6 text-gray-900">Product
@@ -220,61 +247,43 @@ $colors = getColorsByUser($user_id);
 
                     <div class="mt-10 grid grid-cols-1 h-full gap-x-6 gap-y-8 sm:grid-cols-1">
                         <div class="sm:col-span-3 h-full">
-                            <label for="desk" class="block text-sm font-medium leading-6 text-gray-900">Product
+                            <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Product
                                 Image</label>
-                            <div class="mt-2">
-                                <input type="file" class="dropzone" id="demo-upload" name="image[]" multiple>
-                            <!-- <input type="file" class="dropify text-sm" name="image[]" data-max-file-preview="10" data-show-loader="true" ata-errors-position="outside" data-max-file-size="4M" data-max-width="1000" multiple data-height="400" data-allowed-file-extensions="jpg jpeg png gif svg webp"> -->
-                            </div>
+                                <div class="multiple-uploader" id="multiple-uploader">
+                                    <div class="mup-msg">
+                                        <span class="mup-main-msg">click to upload images.</span>
+                                        <span class="mup-msg" id="max-upload-number">Upload up to 10 images</span>
+                                        <span class="mup-msg">Only images, pdf and psd files are allowed for upload</span>
+                                    </div>
+                                </div>
                         </div>
-                    </div>
 
 
 
-                    <div class="mt-6 flex items-center justify-end gap-x-6">
-                        <button type="button" onclick="window.history.back(-1)"
-                            class="text-sm font-semibold leading-6 text-gray-900">Back</button>
-                        <button type="submit"
-                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-                    </div>
+                            <div class="mt-6 flex items-center justify-end gap-x-6">
+                                <button type="button" onclick="window.history.back(-1)"
+                                    class="text-sm font-semibold leading-6 text-gray-900">Back</button>
+                                <button type="submit" id="submitBtn"
+                                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                            </div>
                 </form>
             </div>
         </div>
     </main>
 
-    <style>
-    .dropify-infos-message{
-        font-size: 1.7rem !important;
-        font-weight: 600 !important;
-        margin-top: 1rem !important;
-    }
-    .dropify-wrapper {
-        border: 2px dashed #ccc !important; 
-        border-radius: 5px; 
-    }
-
-    /* Gaya ketika file sedang dihover */
-    .dropify-wrapper:hover {
-        border: 2px dashed #aaa !important; 
-    }
-    .dropzone {
-    background: white;
-    border-radius: 5px;
-    border: 2px dashed rgb(0, 135, 247);
-    border-image: none;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-    </style>
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
-    <!-- Include jQuery -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js" ></script>
-    <!-- Include Dropify JS -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" ></script>  -->
+
     <script src="../dist/js/script.js"></script>
+    <script src="../dist/js/multiple-uploader.js"></script>
+    <script>
+    let multipleUploader = new MultipleUploader('#multiple-uploader').init({
+        maxUpload : 20, // maximum number of uploaded images
+        maxSize:2, // in size in mb
+        filesInpName: 'file',
+        formSelector: '#my-form', // form selector
+    });
+    </script>
 
     <script>
         tinymce.init({
@@ -282,96 +291,9 @@ $colors = getColorsByUser($user_id);
             plugins: "list",
         });
     </script>
-    <script>
-
-    // $(document).ready(function(){
-    //     $('.dropify').dropify();
-
-    //     $('.dropify').on('change', function(){
-    //         // Kosongkan container preview
-    //         $('.preview-container').empty();
-
-    //         // Dapatkan file yang dipilih
-    //         var files = $(this).get(0).files;
-
-    //         // Loop melalui setiap file dan tampilkan preview
-    //         for (var i = 0; i < files.length; i++) {
-    //             var file = files[i];
-                
-    //             // Buat objek URL untuk file
-    //             var fileURL = URL.createObjectURL(file);
-
-    //             // Tambahkan elemen gambar untuk menampilkan preview
-    //             $('.preview-container').append('<img src="' + fileURL + '" alt="Preview">');
-    //         }
-    //     });
-    // });
-</script>
-
-<script>
-   var dropzone = new Dropzone('#demo-upload', {
-  previewTemplate: document.querySelector('#preview-template').innerHTML,
-  parallelUploads: 2,
-  thumbnailHeight: 120,
-  thumbnailWidth: 120,
-  maxFilesize: 3,
-  filesizeBase: 1000,
-  thumbnail: function(file, dataUrl) {
-    if (file.previewElement) {
-      file.previewElement.classList.remove("dz-file-preview");
-      var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
-      for (var i = 0; i < images.length; i++) {
-        var thumbnailElement = images[i];
-        thumbnailElement.alt = file.name;
-        thumbnailElement.src = dataUrl;
-      }
-      setTimeout(function() { file.previewElement.classList.add("dz-image-preview"); }, 1);
-    }
-  }
-
-});
 
 
-// Now fake the file upload, since GitHub does not handle file uploads
-// and returns a 404
-
-var minSteps = 6,
-    maxSteps = 60,
-    timeBetweenSteps = 100,
-    bytesPerStep = 100000;
-
-dropzone.uploadFiles = function(files) {
-  var self = this;
-
-  for (var i = 0; i < files.length; i++) {
-
-    var file = files[i];
-    totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
-
-    for (var step = 0; step < totalSteps; step++) {
-      var duration = timeBetweenSteps * (step + 1);
-      setTimeout(function(file, totalSteps, step) {
-        return function() {
-          file.upload = {
-            progress: 100 * (step + 1) / totalSteps,
-            total: file.size,
-            bytesSent: (step + 1) * file.size / totalSteps
-          };
-
-          self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
-          if (file.upload.progress == 100) {
-            file.status = Dropzone.SUCCESS;
-            self.emit("success", file, 'success', null);
-            self.emit("complete", file);
-            self.processQueue();
-            //document.getElementsByClassName("dz-success-mark").style.opacity = "1";
-          }
-        };
-      }(file, totalSteps, step), duration);
-    }
-  }
-}
-</script>
+   
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

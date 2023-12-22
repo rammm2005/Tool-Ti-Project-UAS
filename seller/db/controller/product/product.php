@@ -2,25 +2,31 @@
 
 require_once "../../connect.php";
 
+class Product extends Database {
 
-class Product extends Database{
+    public function insertProduct($kode_produk, $nama_produk, $deskripsi, $spesifikasi, $stok, $harga, $id_warna, $id_ukuran, $id_seller, $produk_status) {
+        $id_warna_str = implode(',', $id_warna);
+        $id_ukuran_str = implode(',', $id_ukuran);
 
-    public function insertProduct($id_produk, $nama_produk, $deskripsi, $spesifikasi, $stok, $harga, $id_warna, $id_ukuran, $id_seller, $produk_status){
-        $id_produk = $this->idGenerate();
-        $sql = "INSERT INTO produk(id_produk,nama_produk,deskripsi,spesifikasi,stok,harga,id_warna,id_ukuran,id_seller,produk_status)VALUES ('$id_produk','$nama_produk','$deskripsi','$spesifikasi','$stok','$harga','$id_warna','$id_ukuran','$id_seller','$produk_status')";
+        $sql = "INSERT INTO produk (kode_produk, nama_produk, deskripsi, spesifikasi, stok, harga, id_warna, id_ukuran, id_seller, produk_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if($this->connection->query($sql) === TRUE){
-            echo "Record added successfully";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("sssssssssi", $kode_produk, $nama_produk, $deskripsi, $spesifikasi, $stok, $harga, $id_warna_str, $id_ukuran_str, $id_seller, $produk_status);
+
+        if ($stmt->execute()) {
+            return true;
         } else {
-            die("Error: " . $sql . "<br>" . $this->connection->error);
+            die("Error: " . $stmt->errno . " - " . $stmt->error);
         }
     }
+    
+    
+    
 
-    private function idGenerate(){
-        $id ='';
+    public function idGenerate() {
+        $id = '';
 
         $array = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-";
-
 
         for ($i = 0; $i < 20; $i++) {
             $id .= $array[rand(0, strlen($array) - 1)];
