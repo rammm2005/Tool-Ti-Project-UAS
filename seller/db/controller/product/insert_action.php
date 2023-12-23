@@ -21,17 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_ukuran = $_POST['id_ukuran'];
     $id_seller = $_SESSION['user_id'];
 
-    // Check if FilePond data is present
     if (isset($_FILES['file'])) {
-        // Process file uploads using $_FILES
         $pondData = $_FILES['file'];
 
         // Generate product code
         $kode_produk = $produk->idGenerate();
 
-        // Insert product information
         if ($produk->insertProduct($kode_produk, $nama_produk, $deskripsi, $spesifikasi, $stok, $harga, $id_warna, $id_ukuran, $id_seller, $produk_status)) {
-            // Process the uploaded files using $_FILES data
             if ($image->insertImage($kode_produk, $pondData)) {
                 header('Location: ../../../produk/produk.php?unique-seller=' . $id_seller . '&success=added');
                 exit();

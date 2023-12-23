@@ -43,7 +43,7 @@ class Color extends Database{
     }
 
 
-            public function deleteColor($id_warna) {
+    public function deleteColor($id_warna) {
             $this->connection->begin_transaction();
 
             try {
@@ -64,7 +64,7 @@ class Color extends Database{
                 $this->connection->rollback();
                 die($e->getMessage());
             }
-        }
+    }
 
     
 
