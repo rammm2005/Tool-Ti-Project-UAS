@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Dropdown</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        .custom-select-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-select {
+            display: none;
+        }
+
+        .select-styled {
+            display: inline-block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .select-styled:after {
+            content: '';
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: #333 transparent transparent transparent;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            margin-top: -3px;
+            pointer-events: none;
+        }
+
+        .select-styled select {
+            display: none;
+        }
+
+        .select-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .select-option {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .select-option:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="custom-select-wrapper">
+        <div class="select-styled">Ukuran</div>
+        <ul class="select-options">
+            <?php foreach ($ukuran_produk as $ukuran) : ?>
+                <li class="select-option" data-value="<?= $ukuran["ukuran"] ?>"><?= $ukuran["ukuran"] ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <select class="custom-select">
+            <option selected disabled>Ukuran</option>
+            <?php foreach ($ukuran_produk as $ukuran) : ?>
+                <option value="<?= $ukuran["ukuran"] ?>"><?= $ukuran["ukuran"] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <script>
+        const selectStyled = document.querySelector('.select-styled');
+        const selectOptions = document.querySelector('.select-options');
+        const customSelect = document.querySelector('.custom-select');
+
+        selectStyled.addEventListener('click', () => {
+            selectOptions.style.display = selectOptions.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.querySelectorAll('.select-option').forEach(option => {
+            option.addEventListener('click', () => {
+                selectStyled.textContent = option.textContent;
+                selectOptions.style.display = 'none';
+                customSelect.value = option.getAttribute('data-value');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

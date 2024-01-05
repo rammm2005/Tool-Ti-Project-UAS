@@ -305,8 +305,8 @@ $products = getProductById($user_id, $kode_produk);
                                 <label for="desk" class="block text-sm font-medium leading-6 text-gray-900">Product
                                     Deskripsion</label>
                                 <div class="mt-2">
-                                    <textarea name="desk" id="desk" cols="30"
-                                        rows="10"><?= $products['deskripsi'] ?></textarea>
+                                        <textarea name="desk" id="desk" cols="30"
+                                            rows="10"><?= $products['deskripsi'] ?></textarea>
                                 </div>
                             </div>
                             <div class="sm:col-span-3">
